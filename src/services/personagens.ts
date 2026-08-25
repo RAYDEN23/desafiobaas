@@ -94,7 +94,8 @@ export async function equiparItem(
   slot: "arma" | "armadura" | "anel",
   itemId: string
 ): Promise<void> {
-  await updateDoc(doc(db, "personagens", personagemId), { [slot]: itemId });
+  const personagemRef = doc(db, "personagens", personagemId);
+  await updateDoc(personagemRef, { [slot]: itemId });
 }
 
 // ---------------------------------------------------------------------------
