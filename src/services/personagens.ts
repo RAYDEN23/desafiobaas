@@ -114,7 +114,8 @@ export async function deletarPersonagem(
   personagem: Personagem,
   indice: number
 ): Promise<void> {
-  await deleteDoc(doc(db, "personagens", personagem.id));
+  const personagemRef = doc(db, "personagens", personagem.id);
+  await deleteDoc(personagemRef);
 }
 
 // ---------------------------------------------------------------------------
