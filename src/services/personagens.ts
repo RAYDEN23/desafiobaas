@@ -94,8 +94,7 @@ export async function equiparItem(
   slot: "arma" | "armadura" | "anel",
   itemId: string
 ): Promise<void> {
-  // 🐛 BUG 06 — setDoc apaga o documento inteiro ao invés de atualizar só o campo
-  await setDoc(doc(db, "personagens", personagemId), { [slot]: itemId });
+  await updateDoc(doc(db, "personagens", personagemId), { [slot]: itemId });
 }
 
 // ---------------------------------------------------------------------------
@@ -114,8 +113,7 @@ export async function deletarPersonagem(
   personagem: Personagem,
   indice: number
 ): Promise<void> {
-  // 🐛 BUG 07 — usa o índice da lista (0, 1, 2) como ID do documento
-  await deleteDoc(doc(db, "personagens", String(indice)));
+  await deleteDoc(doc(db, "personagens", personagem.id));
 }
 
 // ---------------------------------------------------------------------------
