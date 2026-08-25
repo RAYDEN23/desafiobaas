@@ -3,12 +3,12 @@
 import {
   collection,
   query,
+  where,
   getDocs,
   addDoc,
   deleteDoc,
   doc,
   getDoc,
-  setDoc,
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
@@ -28,9 +28,11 @@ import type { Classe, Personagem } from "@/types";
 // CORREÇÃO: adicione um filtro com where('userId', '==', uid) para que
 // cada usuário veja apenas os seus próprios personagens.
 // ---------------------------------------------------------------------------
-export async function listarPersonagens(_uid: string): Promise<Personagem[]> {
-  // 🐛 BUG 04 — query sem filtro de userId
-  const q = query(collection(db, "personagens"));
+export async function listarPersonagens(uid: string): Promise<Personagem[]> {
+  const q = query(
+    collection(db, "personagens"),
+    where("userId", "==", uid)
+  );
 
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() } as Personagem));
@@ -53,8 +55,7 @@ export async function criarPersonagem(
   nome: string,
   classe: Classe
 ): Promise<string> {
-  // 🐛 BUG 05 — nome de coleção errado: "personagem" ao invés de "personagens"
-  const ref = await addDoc(collection(db, "personagem"), {
+  const ref = await addDoc(collection(db, "personagens"), {
     nome,
     classe,
     nivel: 1,
