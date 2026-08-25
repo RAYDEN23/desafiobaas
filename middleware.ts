@@ -25,8 +25,7 @@ export function middleware(request: NextRequest) {
   );
 
   if (estaNaRotaProtegida) {
-    // 🐛 BUG 02 — condição INVERTIDA: redireciona quem TEM sessão
-    if (token) {
+    if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
