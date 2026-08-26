@@ -49,11 +49,11 @@ O bloco `catch` estava vazio. A exceção era capturada, mas o estado `erro` nun
 
 **Antes:**
 
-![BUG 01 antes da correção](screenshots/bug-01-antes.png)
+![BUG 01 antes da correção](./imagens/bug1.PNG)
 
 **Depois:**
 
-![BUG 01 depois da correção](screenshots/bug-01-depois.png)
+![BUG 01 depois da correção](./imagens/corrigido1.PNG)
 
 Com senha incorreta, a tela passou a exibir **"E-mail ou senha incorretos."**. Para e-mail inexistente, exibe **"Nenhuma conta encontrada com este e-mail."**.
 
@@ -95,11 +95,11 @@ if (!token) {
 
 **Antes:**
 
-![BUG 02 antes da correção](screenshots/bug-02-antes.png)
+![BUG 02 antes da correção](./imagens/bug2.PNG)
 
 **Depois:**
 
-![BUG 02 depois da correção](screenshots/bug-02-depois.png)
+![BUG 02 depois da correção](./imagens/corrigido2.PNG)
 
 Ao acessar `/dashboard`, `/criar-personagem` ou `/personagem` sem sessão, o usuário agora é redirecionado para `/login`. Usuários autenticados continuam acessando essas rotas.
 
@@ -137,11 +137,11 @@ if (senha !== confirmarSenha) {
 
 **Antes:**
 
-![BUG 03 antes da correção](screenshots/bug-03-antes.png)
+![BUG 03 antes da correção](./imagens/bug3.PNG)
 
 **Depois:**
 
-![BUG 03 depois da correção](screenshots/bug-03-depois.png)
+![BUG 03 depois da correção](./imagens/corrigido3.PNG)
 
 Ao digitar senhas diferentes, o cadastro agora é interrompido e informa que as senhas não coincidem. Quando os valores são iguais, a validação pode prosseguir.
 
@@ -188,11 +188,11 @@ import { where } from "firebase/firestore";
 
 **Antes:**
 
-![BUG 04 antes da correção](screenshots/bug-04-antes.png)
+![BUG 04 antes da correção](./imagens/bug4.PNG)
 
 **Depois:**
 
-![BUG 04 depois da correção](screenshots/bug-04-depois.png)
+![BUG 04 depois da correção](./imagens/corrigido4.PNG)
 
 O dashboard agora lista somente os personagens cujo campo `userId` corresponde ao usuário logado.
 
@@ -230,11 +230,11 @@ const ref = await addDoc(collection(db, "personagens"), { ... });
 
 **Antes:**
 
-![BUG 05 antes da correção](screenshots/bug-05-antes.png)
+![BUG 05 antes da correção](./imagens/bug5.PNG)
 
 **Depois:**
 
-![BUG 05 depois da correção](screenshots/bug-05-depois.png)
+![BUG 05 depois da correção](./imagens/corigido5.PNG)
 
 Depois da criação, o personagem é salvo na mesma coleção usada pelo dashboard e passa a aparecer na lista normalmente.
 
@@ -272,11 +272,11 @@ await updateDoc(doc(db, "personagens", personagemId), { [slot]: itemId });
 
 **Antes:**
 
-![BUG 06 antes da correção](screenshots/bug-06-antes.png)
+![BUG 06 antes da correção](./imagens/bug6.PNG)
 
 **Depois:**
 
-![BUG 06 depois da correção](screenshots/bug-06-depois.png)
+![BUG 06 depois da correção](./imagens/corrigido6.PNG)
 
 Equipar uma arma, armadura ou anel agora altera somente o slot escolhido e preserva todos os outros dados do personagem.
 
@@ -314,11 +314,11 @@ await deleteDoc(doc(db, "personagens", personagem.id));
 
 **Antes:**
 
-![BUG 07 antes da correção](screenshots/bug-07-antes.png)
+![BUG 07 antes da correção](./imagens/bug7.PNG)
 
 **Depois:**
 
-![BUG 07 depois da correção](screenshots/bug-07-depois.png)
+![BUG 07 depois da correção](./imagens/corrigido7.PNG)
 
 O botão de excluir agora usa o ID real do documento e remove exatamente o personagem selecionado, independentemente da posição dele na lista.
 
@@ -366,11 +366,11 @@ Nas operações de leitura, atualização e exclusão, `resource.data` represent
 
 **Antes:**
 
-![BUG 08 antes da correção](screenshots/bug-08-antes.png)
+![BUG 08 antes da correção](./imagens/bug8.PNG)
 
 **Depois:**
 
-![BUG 08 depois da correção](screenshots/bug-08-depois.png)
+![BUG 08 depois da correção](./imagens/corrigido8.PNG)
 
 Usuários não autenticados deixam de acessar os personagens. Usuários autenticados só conseguem ler, criar, atualizar e excluir documentos associados ao próprio `userId`.
 
