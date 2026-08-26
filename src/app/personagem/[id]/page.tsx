@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { buscarPersonagem, equiparItem } from "@/services/personagens";
+import { adicionarXP, buscarPersonagem, equiparItem } from "@/services/personagens";
 import { CLASSES, ARMAS, ARMADURAS, ANEIS, type Personagem } from "@/types";
 import BugBanner from "@/components/BugBanner";
 
@@ -37,9 +37,9 @@ export default function PersonagemPage() {
     setMsg("");
     try {
       await equiparItem(personagem.id, slot, itemId);
-      // Atualiza localmente para refletir na UI
-      setPersonagem((prev) => prev ? { ...prev, [slot]: itemId } : prev);
-      setMsg(`✓ ${itemId} equipado!`);
+      await adicionarXP(personagem.id, 10);
+      setPersonagem((prev) => prev ? { ...prev, [slot]: itemId, xp: (prev.xp ?? 0) + 10 } : prev);
+      setMsg(`✓ ${itemId} equipado! +10 XP`);
       setTimeout(() => setMsg(""), 2000);
     } catch {
       setMsg("Erro ao equipar item.");

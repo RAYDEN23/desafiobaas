@@ -11,6 +11,7 @@ import {
   getDoc,
   updateDoc,
   serverTimestamp,
+  increment,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import type { Classe, Personagem } from "@/types";
@@ -123,6 +124,6 @@ export async function deletarPersonagem(
 // ---------------------------------------------------------------------------
 export async function adicionarXP(personagemId: string, quantidade: number) {
   await updateDoc(doc(db, "personagens", personagemId), {
-    xp: quantidade,
+    xp: increment(quantidade),
   });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,9 +17,15 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState("");   // ← esta variável existe mas nunca é usada
+  const [erro, setErro] = useState("");
   const router = useRouter();
-  const { entrar } = useAuth();
+  const { entrar, user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/dashboard");
+    }
+  }, [user, loading, router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

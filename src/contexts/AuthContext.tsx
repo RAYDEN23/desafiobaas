@@ -22,6 +22,7 @@ interface AuthContextType {
   loading: boolean;
   entrar: (email: string, senha: string) => Promise<void>;
   cadastrar: (nome: string, email: string, senha: string) => Promise<void>;
+  atualizarPerfil: (dados: { displayName?: string; photoURL?: string | null }) => Promise<void>;
   sair: () => Promise<void>;
 }
 
@@ -50,13 +51,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     document.cookie = `__session=${await cred.user.getIdToken()}; path=/`;
   }
 
+  async function atualizarPerfil(dados: { displayName?: string; photoURL?: string | null }) {
+    if (!auth.currentUser) return;
+    await updateProfile(auth.currentUser, dados);
+  }
+
   async function sair() {
     await signOut(auth);
     document.cookie = "__session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, entrar, cadastrar, sair }}>
+    <AuthContext.Provider value={{ user, loading, entrar, cadastrar, atualizarPerfil, sair }}>
       {children}
     </AuthContext.Provider>
   );

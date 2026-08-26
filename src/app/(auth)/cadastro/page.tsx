@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import BugBanner from "@/components/BugBanner";
+
+function validarSenha(senha: string) {
+  return senha.length >= 8 && /[A-Z]/.test(senha) && /\d/.test(senha);
+}
 
 // ---------------------------------------------------------------------------
 // 🐛 BUG 03 — CONFIRMAÇÃO DE SENHA COMPARA COM O CAMPO ERRADO
@@ -21,7 +25,13 @@ export default function CadastroPage() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
   const router = useRouter();
-  const { cadastrar } = useAuth();
+  const { cadastrar, user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/dashboard");
+    }
+  }, [user, loading, router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,8 +42,8 @@ export default function CadastroPage() {
       return;
     }
 
-    if (senha.length < 6) {
-      setErro("A senha deve ter no mínimo 6 caracteres.");
+    if (!validarSenha(senha)) {
+      setErro("A senha deve ter no mínimo 8 caracteres, com letra maiúscula e número.");
       return;
     }
 

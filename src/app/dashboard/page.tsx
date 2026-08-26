@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@/firebase/config";
 import { listarPersonagens, deletarPersonagem } from "@/services/personagens";
 import type { Personagem } from "@/types";
 import { CLASSES } from "@/types";
@@ -22,9 +24,19 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!user) return;
-    listarPersonagens(user.uid)
-      .then(setPersonagens)
-      .finally(() => setCarregando(false));
+
+    const q = query(collection(db, "personagens"), where("userId", "==", user.uid));
+    const unsubscribe = onSnapshot(
+      q,
+      (snap) => {
+        const lista = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Personagem));
+        setPersonagens(lista);
+        setCarregando(false);
+      },
+      () => setCarregando(false)
+    );
+
+    return () => unsubscribe();
   }, [user]);
 
   async function handleDeletar(personagem: Personagem, indice: number) {
@@ -42,6 +54,7 @@ export default function DashboardPage() {
   }
 
   async function handleSair() {
+    if (!confirm("Deseja sair da sua conta?")) return;
     await sair();
     router.push("/");
   }
@@ -62,6 +75,9 @@ export default function DashboardPage() {
       <nav className="nav">
         <span className="nav-logo gold-text">⚔️ NEXUS</span>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <Link href="/perfil" className="btn btn-ghost" style={{ fontSize: "0.82rem", padding: "0.4rem 1rem" }}>
+            Perfil
+          </Link>
           <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>
             Olá, {user.displayName ?? user.email}
           </span>
